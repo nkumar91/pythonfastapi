@@ -8,7 +8,7 @@ from app.schema.response import ApiResponse
 router = APIRouter()
 
 @router.post("/login",response_model=ApiResponse[UserLogin])
-def login(email: str=Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+async def login(email: str=Form(...), password: str = Form(...), db: Session = Depends(get_db)):
     print("Login attempt for email:", email)
     user,generated_jwt = login_user(db, email, password)
     if(not user):
@@ -34,7 +34,7 @@ def login(email: str=Form(...), password: str = Form(...), db: Session = Depends
     #     )
 
 @router.post("/signup", response_model=ApiResponse[UserResponse])
-def create(data: UserCreate, db: Session = Depends(get_db)):
+async def create(data: UserCreate, db: Session = Depends(get_db)):
     try:
         user = create_user(db, data)
         return ApiResponse(

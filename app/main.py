@@ -1,13 +1,15 @@
 from fastapi import FastAPI
 from app.api.v1.api import main_router
 from app.db.db import check_db_connection, Base, engine
-from app.models import usermodel
+import app.models
+
 
 app = FastAPI(title="FastAPI App")
 
+
 @app.on_event("startup")
 def startup_event():
-    if check_db_connection():
+    if check_db_connection():  
         print("✅ Database connected successfully")
     else:
         print("❌ Database connection error")

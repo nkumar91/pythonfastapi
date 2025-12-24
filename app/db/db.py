@@ -38,8 +38,7 @@ def check_db_connection():
         print("❌ Database connection failed:", e)
         return False
     
-    
-    
+
 #DEPENDENCY TO GET DB SESSION    
 def get_db():
     db = SessionLocal()
