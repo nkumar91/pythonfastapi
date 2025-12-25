@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from app.models.usermodel import User
 from app.schema.user import UserCreate, UserRead
@@ -23,7 +24,7 @@ def login_user(db:Session,email:str,password:str):
         deprecated="auto"
     )
     # Generate JWT Token
-    generate_jwt = jwt.encode({"sub": user.email,"id":user.id}, jwt_secret, algorithm=jwt_algorithm)
+    generate_jwt = jwt.encode({"email": user.email,"id":user.id,"exp":datetime.utcnow() + timedelta(minutes=30)}, jwt_secret, algorithm=jwt_algorithm)
     #print("Generated JWT:", generate_jwt)
 
     # Verify password
