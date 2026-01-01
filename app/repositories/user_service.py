@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
 from app.models.usermodel import User
 from app.schema.user import UserCreate, UserRead
@@ -6,6 +7,7 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 import os
 from dotenv import load_dotenv
+from app.db.redis import redis_client
 
 #LOAD ENV VARIABLES
 load_dotenv()
@@ -16,6 +18,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 def login_user(db:Session,email:str,password:str):
     user = db.query(User).filter(User.email == email).first()
+    # print("User found during login:", user)
     if(not user):
         return None
     # Check password
@@ -23,14 +26,16 @@ def login_user(db:Session,email:str,password:str):
         schemes=["bcrypt"],
         deprecated="auto"
     )
-    # Generate JWT Token
-    generate_jwt = jwt.encode({"email": user.email,"id":user.id,"exp":datetime.utcnow() + timedelta(minutes=30)}, jwt_secret, algorithm=jwt_algorithm)
-    #print("Generated JWT:", generate_jwt)
-
+    print("User found during login:", user)
     # Verify password
     if(not pwd_context.verify(password,user.password)):
-        return None
-    
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password"
+        )
+    # Generate JWT Token
+    #print("Generated JWT:", generate_jwt)
+    generate_jwt = jwt.encode({"email": user.email,"id":user.id,"exp":datetime.utcnow() + timedelta(minutes=30)}, jwt_secret, algorithm=jwt_algorithm)
     # retuern user and jwt
     return user,generate_jwt
 
@@ -99,3 +104,14 @@ def create_user(db: Session, user: UserCreate):
 #     db.delete(db_user)
 #     db.commit()
 #     return db_user
+
+def blacklist_token(db: Session,payload: dict):
+    # Placeholder for any server-side logout operations if needed
+    # Store the token in Redis to invalidate it
+    exp = payload.get("exp")
+    if exp is None:
+        return False
+    current_time = int(datetime.utcnow().timestamp())
+    ttl = exp - current_time
+    redis_client.setex(payload["token"], ttl, "blacklisted")  # Set token as blacklisted for 1 hour
+    return True

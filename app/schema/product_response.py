@@ -9,6 +9,7 @@ class ProductBase(BaseModel):
     description: str = Field(None, example="This is a sample product.")
     price: float = Field(..., example=19.99)
     stock: int = Field(..., example=100)
+    product_image: str = Field(None, example="http://example.com/image.jpg")
 
     # created_at: Optional[str] = None``
     # updated_at: Optional[str] = None
@@ -20,6 +21,7 @@ class ProductCreate(ProductBase):
     description:str
     price:float
     stock:int
+    product_image:str
     # No additional fields for now
     model_config = {"from_attributes": True} 
 
@@ -30,6 +32,7 @@ class ProductRead(ProductBase):
     description:str
     price:float
     stock:int
+    product_image:str
     created_at:datetime =  Field(default_factory=datetime.utcnow)
     updated_at:datetime = Field(default_factory=datetime.utcnow)
     model_config = {"from_attributes": True}

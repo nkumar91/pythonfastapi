@@ -9,15 +9,15 @@ class UserBase(BaseModel):
 	"""Shared fields for a user"""
 
 	name: str = Field(..., example="Jane Doe")
-	email: str = Field(..., example="jane@example.com")
+	email: EmailStr = Field(..., example="jane@example.com")
 
 
 class UserCreate(UserBase):
 	"""Fields required when creating a user"""
 	# Use SecretStr to avoid accidentally printing passwords; in production
 	# you should hash passwords before storing them.
-	name:str
-	email:str
+	name:str = Field(min_length=2, max_length=50, examples=["John Doe"])
+	email:EmailStr
 	password:str
 	#password: SecretStr = Field(..., example="strong-password")
 

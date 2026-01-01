@@ -18,8 +18,14 @@ if not all([DB_HOST, DB_USER, DB_NAME]):
     raise RuntimeError("Database environment variables not set")
 
 #DATABASE URL
+#postgresql+psycopg://user:pass@localhost:5432/dbname
+# DATABASE_URL = (
+#     f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}"
+#     f"@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+# )
+
 DATABASE_URL = (
-    f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}"
+    f"postgresql+psycopg://{DB_USER}:{DB_PASSWORD}"
     f"@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 

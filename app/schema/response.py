@@ -9,3 +9,10 @@ class ApiResponse(BaseModel, Generic[T]):
     message: str
     data: Optional[T] = None
     error: Optional[str] = None
+class ApiResponseProduct(BaseModel, Generic[T]):
+    success: bool
+   # status_code: int = 200
+    message: str
+    total_pages: int
+    data: Optional[T] = None
+    error: Optional[str] = None

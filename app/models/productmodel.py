@@ -11,6 +11,7 @@ class ProductModel(Base):
     description = Column(String(255), nullable=True)
     price = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False, default=0)
+    product_image = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate =func.now())
     def __repr__(self):
