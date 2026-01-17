@@ -4,6 +4,8 @@ from app.db.db import check_db_connection, Base, engine
 # from app.models.productmodel import ProductModel
 # from app.models.usermodel import User
 import app.models
+# import uvicorn
+
 
 
 app = FastAPI(
@@ -12,7 +14,6 @@ app = FastAPI(
     # redoc_url=None, # this code is disabled in production
     version="1.0.0",
     openapi_url="/api/v1/openapi.json",
-    
 )
 
 @app.on_event("startup")
@@ -36,3 +37,5 @@ app.include_router(main_router, prefix="/api/v1")
 # @app.get("/db-status")
 # def db_status():
 #     return {"database": "connected" if check_db_connection() else "not connected"}
+
+
