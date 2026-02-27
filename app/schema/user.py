@@ -1,7 +1,6 @@
 from __future__ import annotations
-
 from datetime import datetime
-from pydantic import BaseModel, Field, EmailStr, SecretStr
+from pydantic import BaseModel, Field, EmailStr, SecretStr, validator
 
 
 # Required fields for a user
@@ -16,9 +15,15 @@ class UserCreate(UserBase):
 	"""Fields required when creating a user"""
 	# Use SecretStr to avoid accidentally printing passwords; in production
 	# you should hash passwords before storing them.
-	name:str = Field(min_length=2, max_length=50, examples=["John Doe"])
+	name:str = Field(min_length=2, max_length=50, examples=["John Doe"],)#pattern=r"^[a-z0-9_]{3,20}$"
 	email:EmailStr
-	password:str
+	password:str = Field(min_length=8, max_length=16, examples=["strong-password"])
+	# @validator("password")
+	# def validate_password(cls, v):
+	# 	if " " in v:
+	# 		raise ValueError("Password must not contain spaces")
+	# 	return v
+	
 	#password: SecretStr = Field(..., example="strong-password")
 
 

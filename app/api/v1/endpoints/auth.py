@@ -9,7 +9,11 @@ from app.middleware.verify_jwt import verify_jwt
 router = APIRouter()
 
 @router.post("/login",response_model=ApiResponse[UserLogin])
-def login(email: str=Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+def login(
+     email: str=Form(...),
+     password: str = Form(...), 
+     db: Session = Depends(get_db)
+     ):
     print("Login attempt for email:", email)
     user,generated_jwt = login_user(db, email, password)
     if(not user):

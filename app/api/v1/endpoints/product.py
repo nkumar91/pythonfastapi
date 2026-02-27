@@ -7,11 +7,10 @@ from app.db.db import get_db
 from typing import List
 from sqlalchemy.orm import Session
 from app.repositories.product_service import get_products
-# from jose import JWTError, jwt
+#from jose import JWTError, jwt
 #from fastapi.security import OAuth2PasswordBearer
 #oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-# router = APIRouter(dependencies=[Depends(verify_jwt)]) # Apply JWT verification to all endpoints in this router
+#router = APIRouter(dependencies=[Depends(verify_jwt)]) # Apply JWT verification to all endpoints in this router
 
 router = APIRouter()
 #@app.get("/products/{product_id}")

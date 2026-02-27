@@ -55,7 +55,7 @@ def login_user(db:Session,email:str,password:str):
 
 def create_user(db: Session, user: UserCreate):
     existing_user = (
-        db.query(User)
+         db.query(User)
         .filter(User.email == user.email)
         .first()
     )
